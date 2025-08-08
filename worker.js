@@ -1,30 +1,38 @@
 /* CONFIGURATION STARTS HERE */
 
-/* Step 1: enter your domain name like fruitionsite.com */
-const MY_DOMAIN = "olyainsight.com";
+const MY_DOMAIN = 'olyainsight.com';
+const START_PAGE = '234306528551805ca11fd15629e032f8';
+const PATH_NAME = null; // or a specific path like "/blog"
 
-/*
- * Step 2: enter your URL slug to page ID mapping
- * The key on the left is the slug (without the slash)
- * The value on the right is the Notion page ID
- */
-const SLUG_TO_PAGE = {
-  "": "234306528551805ca11fd15629e032f8",
-  thanks: "9d9864f5338b47b0a7f42e0f0e2bbf46",
-  showcase: "92053970e5084019ac096d2df7e7f440",
-  roadmap: "7d4b21bfb4534364972e8bf9f68c2c36"
-};
+const PAGE_TITLE = 'OlyaInsight';
+const PAGE_DESCRIPTION = 'Personal Notion Site Powered by Fruition';
+const OG_IMAGE_URL = 'https://notion.so/images/logo.png';
 
-/* Step 3: enter your page title and description for SEO purposes */
-const PAGE_TITLE = "Fruition";
-const PAGE_DESCRIPTION =
-  "Free, Open Source Toolkit For Customizing Your Notion Page";
+addEventListener('fetch', event => {
+  event.respondWith(fetchAndApply(event.request));
+});
 
-/* Step 4: enter a Google Font name, you can choose from https://fonts.google.com */
-const GOOGLE_FONT = "Rubik";
+async function fetchAndApply(request) {
+  const url = new URL(request.url);
 
-/* Step 5: enter any custom scripts you'd like */
-const CUSTOM_SCRIPT = ``;
+  if (url.pathname === '/' || url.pathname === '') {
+    url.pathname = `/${START_PAGE}`;
+  }
+
+  url.hostname = 'www.notion.so';
+
+  const newRequest = new Request(url, {
+    body: request.body,
+    headers: request.headers,
+    method: request.method,
+    redirect: 'follow'
+  });
+
+  let response = await fetch(newRequest);
+
+  // Тут можно вставить кастомный код для кастомизации страницы (CSS/JS)
+  return response;
+}
 
 /* CONFIGURATION ENDS HERE */
 
